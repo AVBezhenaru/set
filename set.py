@@ -1,39 +1,65 @@
 class PowerSet:
 
     def __init__(self):
-        # ваша реализация хранилища
+        self.init = {}
+        self.slots = []
 
     def size(self):
-        return 0
-        # количество элементов в множестве
+        return len(self.init)
 
     def put(self, value):
-        # всегда срабатывает
+        if self.get(value) is False:
+            self.init[value] = value
+            self.slots = list(self.init.keys())
 
     def get(self, value):
-        # возвращает True если value имеется в множестве,
-        # иначе False
+        if value in self.init:
+            return True
         return False
 
     def remove(self, value):
-        # возвращает True если value удалено
-        # иначе False
+        if self.get(value) is True:
+            del self.init[value]
+            self.slots = list(self.init.keys())
+            return True
         return False
 
     def intersection(self, set2):
-        # пересечение текущего множества и set2
-        return None
+        result = PowerSet()
+        if set2.init != {} and self.init != {}:
+
+            for key in self.init:
+                c = key
+                for key in set2.init:
+                    d = key
+                    if c == d:
+                        result.put(c)
+
+        return result
 
     def union(self, set2):
-        # объединение текущего множества и set2
-        return None
+        result = PowerSet()
+        for key in self.init:
+            result.put(key)
+
+        for key in set2.init:
+            result.put(key)
+
+        return result
 
     def difference(self, set2):
-        # разница текущего множества и set2
-        return None
+        result = PowerSet()
+        for key in self.init:
+            a = set2.get(key)
+            if a is False:
+                result.put(key)
+
+        return result
 
     def issubset(self, set2):
-        # возвращает True, если set2 есть
-        # подмножество текущего множества,
-        # иначе False
-        return False
+        for key in set2.init:
+            a = self.init.get(key)
+            if a is None:
+                return False
+
+        return True
